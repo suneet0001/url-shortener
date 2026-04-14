@@ -47,8 +47,8 @@ exports.redirectUrl = async (req, res) => {
     // 🔐 password protected
     if (url.password) {
       return res.redirect(
-        `${process.env.FRONTEND_URL}/password/${short}`
-      );
+  `${process.env.FRONTEND_URL}?short=${short}`
+);
     }
 
     url.clicks++;

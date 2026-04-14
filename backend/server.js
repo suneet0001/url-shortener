@@ -8,8 +8,8 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// ✅ Use environment variable (IMPORTANT)
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/url-shortener";
+// ✅ MUST use env variable (no fallback in production)
+const MONGO_URI = process.env.MONGO_URI;
 
 // MongoDB Connection
 mongoose.connect(MONGO_URI)
@@ -17,7 +17,15 @@ mongoose.connect(MONGO_URI)
   .catch((err) => console.log(err));
 
 // Routes
-app.use("/", require("./routes/urlRoutes"));
+const routes = require("./routes/urlRoutes");
+
+app.use("/api", routes);   // API routes
+app.use("/", routes);      // short URLs (/yt)
+
+// Health route
+app.get("/", (req, res) => {
+  res.send("API Running 🚀");
+});
 
 // Server
 const PORT = process.env.PORT || 5000;

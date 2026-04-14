@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { FaCopy, FaTrash } from "react-icons/fa";
 
+const API = process.env.REACT_APP_API;
+
 function Dashboard() {
   const [url, setUrl] = useState("");
   const [custom, setCustom] = useState("");
@@ -11,7 +13,7 @@ function Dashboard() {
   const [urls, setUrls] = useState([]);
 
   const fetchAnalytics = async () => {
-    const res = await axios.get("http://localhost:5000/analytics");
+    const res = await axios.get(`${API}/api/analytics`);
     setUrls(res.data);
   };
 
@@ -21,14 +23,14 @@ function Dashboard() {
 
   const handleSubmit = async () => {
     try {
-      const res = await axios.post("http://localhost:5000/shorten", {
+      const res = await axios.post(`${API}/api/shorten`, {
         url,
         custom,
         password,
         expiry,
       });
 
-      setShort(`http://localhost:5000/${res.data.short}`);
+      setShort(`${API}/${res.data.short}`);
       fetchAnalytics();
     } catch {
       alert("Error creating URL");
@@ -38,17 +40,16 @@ function Dashboard() {
   return (
     <div
       style={{
-  minHeight: "100vh",
-  background: "radial-gradient(circle at top, #8b5cf6, #764ba2)",
-  padding: "40px",
-  fontFamily: "Inter, sans-serif",
-}}
+        minHeight: "100vh",
+        background: "radial-gradient(circle at top, #8b5cf6, #764ba2)",
+        padding: "40px",
+        fontFamily: "Inter, sans-serif",
+      }}
     >
-      {/* OVERLAY */}
       <div
         style={{
           minHeight: "100vh",
-          background: "rgba(255, 255, 255, 0.26)", // 🔥 ensures text visibility
+          background: "rgba(255, 255, 255, 0.26)",
           padding: "20px",
         }}
       >
@@ -66,7 +67,7 @@ function Dashboard() {
             🔗 Smart URL Shortener
           </h1>
 
-          {/* INPUT CARD */}
+          {/* CREATE URL */}
           <div
             className="p-4 mb-5"
             style={{
@@ -154,7 +155,7 @@ function Dashboard() {
 
                     <td>
                       <a
-                        href={`http://localhost:5000/${u.short}`}
+                        href={`${API}/${u.short}`}
                         target="_blank"
                         rel="noreferrer"
                       >
@@ -181,7 +182,7 @@ function Dashboard() {
                         style={{ background: "#6366f1", color: "white" }}
                         onClick={() =>
                           navigator.clipboard.writeText(
-                            `http://localhost:5000/${u.short}`
+                            `${API}/${u.short}`
                           )
                         }
                       >
@@ -194,7 +195,7 @@ function Dashboard() {
                         onClick={async () => {
                           if (window.confirm("Delete this URL?")) {
                             await axios.delete(
-                              `http://localhost:5000/delete/${u._id}`
+                              `${API}/api/delete/${u._id}`
                             );
                             fetchAnalytics();
                           }

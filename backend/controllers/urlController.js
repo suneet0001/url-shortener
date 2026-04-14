@@ -43,9 +43,11 @@ exports.redirectUrl = async (req, res) => {
       return res.status(403).send("Link expired");
     }
 
-    // 🔐 If password → redirect to frontend page
+    // 🔐 password protected
     if (url.password) {
-      return res.redirect(`http://localhost:3000/password/${short}`);
+      return res.redirect(
+        `${process.env.FRONTEND_URL}/password/${short}`
+      );
     }
 
     url.clicks++;
@@ -53,6 +55,7 @@ exports.redirectUrl = async (req, res) => {
 
     res.redirect(url.original);
   } catch (err) {
+    console.log(err);
     res.status(500).send("Server error");
   }
 };
@@ -76,6 +79,7 @@ exports.verifyPassword = async (req, res) => {
 
     res.json({ redirect: url.original });
   } catch (err) {
+    console.log(err);
     res.status(500).send("Server error");
   }
 };

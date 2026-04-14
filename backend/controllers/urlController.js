@@ -1,3 +1,4 @@
+console.log("NEW DEPLOY ACTIVE");
 const Url = require("../models/Url");
 const shortid = require("shortid");
 const bcrypt = require("bcryptjs");

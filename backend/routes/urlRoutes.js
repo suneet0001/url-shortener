@@ -1,34 +1,21 @@
 const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
+const router = express.Router();
 
-const app = express();
+const {
+  createShort,
+  redirectUrl,
+  getAllUrls,
+  deleteUrl,
+  verifyPassword,
+} = require("../controllers/urlController");
 
-// Middleware
-app.use(express.json());
-app.use(cors());
+router.post("/shorten", createShort);
+router.get("/analytics", getAllUrls);
+router.delete("/delete/:id", deleteUrl);
 
-// ✅ MUST use env variable (no fallback in production)
-const MONGO_URI = process.env.MONGO_URI;
+router.post("/verify/:short", verifyPassword);
 
-// MongoDB Connection
-mongoose.connect(MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log(err));
+// MUST BE LAST
+router.get("/:short", redirectUrl);
 
-// Routes
-const routes = require("./routes/urlRoutes");
-
-app.use("/api", routes);   // API routes
-app.use("/", routes);      // short URLs (/yt)
-
-// Health route
-app.get("/", (req, res) => {
-  res.send("API Running 🚀");
-});
-
-// Server
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+module.exports = router;

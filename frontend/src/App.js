@@ -7,7 +7,6 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/password/:short" element={<PasswordPage />} />
       </Routes>
     </BrowserRouter>
   );

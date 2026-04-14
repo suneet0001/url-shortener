@@ -5,7 +5,7 @@ import { useParams } from "react-router-dom";
 const API = process.env.REACT_APP_API;
 
 function PasswordPage() {
-  const { short } = useParams();
+  const short = new URLSearchParams(window.location.search).get("short");
   const [password, setPassword] = useState("");
 
   const submit = async () => {

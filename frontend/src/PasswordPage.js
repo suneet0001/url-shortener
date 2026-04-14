@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 
 const API = process.env.REACT_APP_API;
 

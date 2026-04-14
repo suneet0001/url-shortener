@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { FaCopy, FaTrash } from "react-icons/fa";
 
-const API = process.env.REACT_APP_API;
+const API = "https://url-backend-jvgq.onrender.com";
 
 function Dashboard() {
   const [url, setUrl] = useState("");
